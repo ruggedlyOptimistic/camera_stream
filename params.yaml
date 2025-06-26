@@ -1,0 +1,146 @@
+# params.yaml
+
+Row_Following:
+  debug_level: 1
+  visible_streams:  
+    raw_color_stream_visible: True
+    raw_depth_stream_visible: True
+    processed_color_stream_visible: False
+    processed_depth_stream_visible: False
+    
+Cameras:
+  resolution:
+    width: 640
+    height: 480
+  frame_rate: 30
+  depth_aligned: True
+  
+  serial:
+    '311322301090':
+      model: 'D456'
+      location: 'A'
+      depth:
+        enabled: 1
+        format: z16
+      color:
+        enabled: 1
+        format: bgr8
+      ir:
+        enabled: 0
+        format: y8
+      imu:
+        gyro:
+          enabled: 0
+          frame_rate: 200
+        accelerometer:
+          enabled: 0
+          frame_rate: 200
+
+    '309622300248':
+      model: 'D456'
+      location: 'D'
+      depth:
+        enabled: 1
+        format: z16
+      color:
+        enabled: 1
+        format: bgr8
+      ir:
+        enabled: 0
+        format: y8
+      imu:
+        gyro:
+          enabled: 0
+          frame_rate: 200
+        accelerometer:
+          enabled: 0
+          frame_rate: 200
+
+Image_Handler:
+  # OpenCV color codes in [BLUE, GREEN, RED]
+  colors:
+    white: [255, 255, 255]
+    red: [0, 0, 255]
+    blue: [255, 0, 0]
+    yellow: [0, 255, 255]
+    green: [0, 255, 0]
+    pink: [203, 192, 255]
+    cyan: [255, 255, 0]
+    magenta: [255, 0, 255]
+    black: [0, 0, 0]
+  
+  # Set base parameters for drawing
+  linestyle:
+    thin:
+      thickness: 0.1
+
+  # Font settings for debug text
+  font:
+    type: "HERSHEY_SIMPLEX"
+    scale: 0.5
+    color: 'white'
+    thickness: 1
+
+  # General furrow tracking parameters
+  draw_flags:
+    calibration_line_visible: True
+    roi_boundary_visible: True
+
+Furrow_Tracker:
+  # Region of Interest (ROI) settings
+  
+  # ROI for debugging
+  ROI:
+    row_limits: [200, 350]
+    col_limits: [200, 350]
+
+  #ROI:
+  #  row_limits: [100,440]
+  #  col_limits: [240,440]
+  
+  # MUST BE IN RANGE( roi_row_initial, roi_row_final)
+  reticle_target_row: 275
+  
+  # Camera mount height in millimeters
+  camera_mount_height: 1828.8
+  
+  # Camera mount pitch angle in degrees
+  camera_pitch_angle: 30
+
+  # Tire edge definition 
+  tire_left_edge_offset: 210  # column defined
+  tire_right_edge_offset: 250 # column defined
+
+  # 3-second look-ahead point
+  # IMPORTANT! Make sure to define a point inside the ROI row limits
+  target_center_point_row: 200 # row-defined
+
+  # Depth percentage for edge detection
+  edge_depth_change_pct: 0.1
+
+  # Color offset intercepts
+  iOffsetInterceptColor: 0
+  iOffsetInterceptColor2: 0
+
+  # Calibration paths
+  calibration_filename: 'furrow.cal'
+
+  min_depth_valid_threshold: 100
+  min_valid_centers_threshold: 0.25   #inlier ratio
+  max_center_line_deviation: 5
+
+  # RANSAC params
+  RANSAC:
+    threshold: 5
+    max_iterations: 100
+
+  # EMA_Filter params
+  EMA_Filter:
+    slope_alpha: 0.8
+    intercept_alpha: 0.8
+    min_valid_score_threshold: 0.8  # can probably be much higher than 0.7. replaces nValidForTotalsMin
+
+  GaussianBlur:
+    kernel_size: [4,4]
+    sigma_x: 1.0
+    sigma_y: 1.0
